@@ -1,0 +1,18 @@
+{
+    "name": "teste-webdriverio",
+    "version": "1.0.0",
+    "description": "first-test",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: Nothing here\""
+    },
+    "keywords": [],
+    "author": "Regis S. Zanluchi",
+    "license": "ISC",
+    "dependencies": {
+        "@wdio/cli": "^7.7.3",
+        "node-horseman": "^3.3.0",
+        "wdio": "^4.0.0",
+        "webdriverio": "^7.7.2"
+    }
+}
