@@ -1,72 +1,46 @@
-const Browser = require('./browser');
-
-class Page extends Browser {
-
-    constructor( uri ){
-        super(uri);
-        this.page = null;
-        this._username = null;
-        this._seletor = null;
+class Common {
+    constructor(){
         this._element = null;
     }
 
-    /*
-    get password() { return $('#password') }
-    get submitBtn() { return $('form button[type="submit"]') }
-    get flash() { return $('#flash') }
-    get headerLinks() { return $$('#header a') } */
-
-    async open ( ){
-        this.page = await super.open( );
-    }
-
     async findSelector(selector) {
-            
-        return await this.page.$(selector).then( ( elementFound ) => {
+        return await browser.$(selector).then( ( elementFound ) => {
             console.log(`Elemento ${selector} encontrado: `);
             return elementFound;
         }, ( err ) => {
             console.log(`Não encontrou ${selector}: `, err);
         } ).catch((err) => {
             console.log(`Erro no seletor ${selector}: `, err);
-        })/* .finally( ( elementFound ) => {
-            console.log(`Elemento ${selector} encontrado: `);
-            return elementFound;
-        }); */
+        });
     }
 
     async findArrayOfSelector(selector) {
-
-        try{
-            return await this.page.$$(selector);
-        }catch(err){
+        return await browser.$$(selector).then( ( elementFound ) => {
+            console.log(`Elemento ${selector} encontrado: `);
+            return elementFound;
+        }, ( err ) => {
+            console.log(`Não encontrou ${selector}: `, err);
+        } ).catch((err) => {
             console.log(`Erro no seletor ${selector}: `, err);
-        }
+        });
     }
 
     async click(selector) {
-
         if (selector){
             this._element = await this.findSelector(selector);
         }
         console.log('Tipo do elemento: ',typeof this._element);
-
         if ((typeof this._element) === Array) {
-     
             for (const el of this._element) {
-     
                 while(!(el.isClickable())){
-                    this.page.pause(1000);
+                    browser.pause(1000);
                 }
-     
                 await el.click();
             }
         }else{
-     
             while(!(this._element.isClickable())){
-                this.page.pause(1000);
+                browser.pause(1000);
             }
-     
             this._element.click();
         }
         return this._element
@@ -86,13 +60,13 @@ class Page extends Browser {
 
     async loaded(){
         var state = '';
-        await this.page.pause(4000);
+        //await browser.pause(4000);
 
         while (state.toString() !== 'complete'){
 
-            await this.page.pause(1000);
+            await browser.pause(1000);
 
-            state = await this.page.execute( 'return document.readyState');
+            state = await browser.execute( 'return document.readyState');
 
             console.log('Status page em: ', state.toString( ));
         }
@@ -149,4 +123,4 @@ class Page extends Browser {
 
 }
 
-module.exports = Page;
+module.exports = new Common();
