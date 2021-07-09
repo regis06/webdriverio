@@ -4,12 +4,8 @@ const Page  = require('./class/init');
 
     const page = new Page( 'https://br.grepolis.com/' );
 
-    await page.authenticate( {login: 'ArturKing', 
-                                password: '06regis061994',
-                                loginSelector: '#login_userid',
-                                passwordSelector: '#login_password',
-                                submit: '#login_Login'
-                            } );
+
+    await page.authenticate(  );
 
     await page.click('.world_name.type_casual_world');
 

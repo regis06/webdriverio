@@ -1,23 +1,40 @@
 const { remote  } = require('webdriverio');
 
-class Browser {
-    constructor( uri ) {
-        this.uri = uri;
+class Authenticate {
+    get uri(){ return 'https://br.grepolis.com/'; }
+    get config(){ return { capabilities: { browserName: 'firefox' } }; }
+    get data(){
+        return {
+            login: 'ArturKing', 
+            password: '06regis061994',
+            loginSelector: '#login_userid',
+            passwordSelector: '#login_password',
+            submit: '#login_Login'
+        }
     }
 
-    async init( ){
-        this.browser = await remote({
-            capabilities: {
-                browserName: 'firefox'
-            }
-        });
+    async init(){
+        global.browser = await remote(this.config);
     }
 
-    async open( ) {
-        await this.init(); 
-        await this.browser.url( this.uri );
-        return this.browser;
+    async open() { 
+        await browser.url(this.uri);
+    }
+
+    async executeAuthenticate() {
+        
+        /* await super.open( );
+    
+        await super.click( userSelector );
+
+        await super.setValue( login );
+
+        await super.setValue( password, passwordSelector );
+
+        await super.click( submit );
+
+        await super.loaded( ); */
     }
 }
 
-module.exports = Browser;
+module.exports = Authenticate;

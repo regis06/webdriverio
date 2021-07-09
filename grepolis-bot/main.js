@@ -2,7 +2,7 @@ const authenticate = require('./class/authenticate');
 
 ;(async () => {
 
-    authenticate.init();
-    authenticate.open();
-
+    await authenticate.init();
+    await authenticate.open();
+    
 })();

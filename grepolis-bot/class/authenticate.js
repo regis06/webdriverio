@@ -16,4 +16,4 @@ class Authenticate {
     }
 }
 
-module.exports = Authenticate();
+module.exports = Authenticate;
