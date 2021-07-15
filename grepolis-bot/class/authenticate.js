@@ -6,6 +6,7 @@ class Authenticate {
 
     get config(){ return { capabilities: { browserName: 'firefox' } }; }
     get uri(){ return 'https://br.grepolis.com/'; }
+    get nextUri(){ return 'https://br0.grepolis.com/start/index'; }
     get userField(){ return '#login_userid'}
     get passwordField(){ return '#login_password' }
     get submitButton(){ return '#login_Login'}
@@ -25,7 +26,7 @@ class Authenticate {
         await common.setValue(this.userValue, this.userField);
         await common.setValue(this.passwordValue, this.passwordField);
         await common.click(this.submitButton);
-        await common.loaded();
+        await common.waitNextPage(this.nextUri);
     }
 }
 

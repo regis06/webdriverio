@@ -3,6 +3,8 @@ class Common {
         this._element = null;
     }
 
+    get loadedConfig(){ return { timeout: 10000, timeoutMsg: 'Timeout load page.', interval: 2000 };}
+
     async findSelector(selector) {
         return await browser.$(selector).then( ( elementFound ) => {
             console.log(`Elemento ${selector} encontrado: `);
@@ -32,18 +34,18 @@ class Common {
         console.log('Tipo do elemento: ',typeof this._element);
         if ((typeof this._element) === Array) {
             for (const el of this._element) {
-                while(!(el.isClickable())){
-                    browser.pause(1000);
+                while(!(await el.isClickable())){
+                    await browser.pause(1000);
                 }
                 await el.click();
             }
         }else{
-            while(!(this._element.isClickable())){
-                browser.pause(1000);
+            while(!(await this._element.isClickable())){
+                await browser.pause(1000);
             }
-            this._element.click();
+            await this._element.click();
         }
-        return this._element
+        return this._element;
     }
 
     async setValue(value, selector){
@@ -59,17 +61,22 @@ class Common {
     }
 
     async loaded(){
-        var state = '';
-        //await browser.pause(4000);
+        await browser.waitUntil(async () => {
+                return ((await browser.executeScript('document.readyState')) === 'complete');
+            },
+            this.loadedConfig                                          
+        );
+        console.log('Página carregada');
+    }
 
-        while (state.toString() !== 'complete'){
-
-            await browser.pause(1000);
-
-            state = await browser.execute( 'return document.readyState');
-
-            console.log('Status page em: ', state.toString( ));
+    async waitNextPage(uri){
+        let url = await browser.getUrl();
+        while(!(url.includes(uri))){
+            await browser.pause(2000);
+            await this.loaded();
+            url = await browser.getUrl();
         }
+        //console.log('Pŕoxima página carregada.');
     }
 
     async elementClickable( selector ){
@@ -115,10 +122,6 @@ class Common {
     async getTextToInt( element ){
 
         return parseInt(await element.getText());
-    }
-
-    async deleteSession(){
-        await this.browser.deleteSession();
     }
 
 }

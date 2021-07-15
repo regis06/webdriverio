@@ -5,7 +5,7 @@ const Page  = require('./class/init');
     const page = new Page( 'https://br.grepolis.com/' );
 
 
-    await page.authenticate(  );
+    await page.authenticate();
 
     await page.click('.world_name.type_casual_world');
 
